@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>InsightForge — Audyt ankiety (1 plik)</title>
+<style>
+  :root{
+    --bg:#0f0f14; --card:#17171f; --line:rgba(255,255,255,.10);
+    --text:#f5f5f7; --muted:#a1a1aa; --accent:#7c3aed; --accent2:#22c55e;
+    --warn:#f59e0b; --bad:#f87171; --radius:18px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,system-ui;background:var(--bg);color:var(--text);padding:22px}
+  .wrap{max-width:1100px;margin:0 auto}
+  h1{margin:0 0 8px;font-size:24px}
+  .muted{color:var(--muted)}
+  .card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:14px 14px;margin:12px 0}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  input,button,select,textarea{
+    border-radius:12px;border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.04);color:#fff;padding:10px 12px;
+    font-size:14px;
+  }
+  textarea{width:100%;min-height:120px;resize:vertical}
+  button{font-weight:800;cursor:pointer}
+  button.primary{background:linear-gradient(135deg,var(--accent),#4f46e5);border:0}
+  button.ghost{background:rgba(255,255,255,.03)}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  @media(max-width:980px){.kpis{grid-template-columns:1fr 1fr}}
+  .kpi .lbl{color:var(--muted);font-size:12px}
+  .kpi .val{font-size:26px;font-weight:900;margin-top:6px}
+  .good{color:var(--accent2)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+  .hr{height:1px;background:var(--line);margin:12px 0}
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  th,td{border-bottom:1px solid rgba(255,255,255,.08);padding:8px;text-align:left;font-size:13px;vertical-align:top}
+  th{color:#d4d4dd}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:12px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:980px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Audyt jakości danych z ankiety — 1 plik (PRO)</h1>
+  <p class="muted" style="margin:0">
+    Wrzucasz CSV → dostajesz Quality Score + flagi (speeding/straight-lining/sprzeczności) + eksport CSV do Excela.
+    Działa offline w przeglądarce. Bez backendu.
+  </p>
+
+  <div class="card">
+    <div class="row">
+      <input type="file" id="file" accept=".csv,text/csv"/>
+      <span class="pill">Separator</span>
+      <select id="sep">
+        <option value=";">;</option>
+        <option value=",">,</option>
+        <option value="\t">TAB</option>
+      </select>
+
+      <span class="pill">Kolumna ID (opcjonalnie)</span>
+      <input id="idcol" placeholder="np. RespondentID"/>
+
+      <span class="pill">Kolumna czasu (opcjonalnie)</span>
+      <input id="timecol" placeholder="np. Czas, Duration, TimeSeconds"/>
+
+      <button class="primary" id="analyze">Analizuj</button>
+      <button class="ghost" id="export">Eksport CSV (Excel-ready)</button>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="row">
+      <span class="pill">Próg odrzucenia</span>
+      <input id="rejectThreshold" type="number" value="60" style="width:90px"/>
+      <span class="pill">Kara: speeding</span>
+      <input id="pSpeed" type="number" value="30" style="width:90px"/>
+      <span class="pill">Kara: straight-lining</span>
+      <input id="pStraight" type="number" value="30" style="width:90px"/>
+      <span class="pill">Kara: sprzeczność</span>
+      <input id="pContr" type="number" value="40" style="width:90px"/>
+      <span class="pill">Proporcja straight-lining</span>
+      <input id="straightRatio" type="number" value="0.8" step="0.05" style="width:90px"/>
+      <span class="pill">Min. liczba odpowiedzi do straight-lining</span>
+      <input id="straightMin" type="number" value="8" style="width:90px"/>
+    </div>
+
+    <p class="muted" style="margin:10px 0 0">
+      Jeśli nie masz czasu wypełnienia → speeding będzie pominięty automatycznie.
+    </p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <b>Reguły sprzeczności (wbudowane)</b>
+      <ul class="muted" style="margin:8px 0 0;line-height:1.5">
+        <li>Dzieci: „Nie” + podany wiek dziecka</li>
+        <li>Wiek &lt; 18 + status: „pełny etat / emeryt”</li>
+        <li>Status: „student” + wiek &gt; 60</li>
+        <li>Dochód = 0 + status: „pełny etat”</li>
+        <li>Brak pracy + branża podana</li>
+        <li>Płeć K/M + „jestem w ciąży” (jeśli takie pytanie wystąpi)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <b>Dodaj własne reguły (opcjonalnie)</b>
+      <p class="muted" style="margin:8px 0 8px">
+        Format: jedna reguła na linię<br/>
+        <span class="pill">IF:kolumna~wartość; AND:kolumna~wartość; THEN:FLAGA</span><br/>
+        Przykład: <span class="pill">IF:Status~emeryt; AND:Wiek&lt;40; THEN:Sprzeczność(wiek/status)</span>
+      </p>
+      <textarea id="customRules" placeholder="Wklej tu własne reguły..."></textarea>
+    </div>
+  </div>
+
+  <div class="card" id="summary" style="display:none">
+    <div class="kpis">
+      <div class="kpi">
+        <div class="lbl">Średni Quality Score</div>
+        <div class="val good" id="avgScore">—</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Odrzucone (&lt; próg)</div>
+        <div class="val bad" id="rejPct">—</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Sprzeczności</div>
+        <div class="val warn" id="contr">—</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Straight-lining</div>
+        <div class="val warn" id="straight">—</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Speeding</div>
+        <div class="val warn" id="speed">—</div>
+      </div>
+    </div>
+    <div class="hr"></div>
+    <b>Tekst do skopiowania do raportu (1 zdanie)</b>
+    <p class="muted" id="copyText" style="margin:8px 0 0"></p>
+    <button class="ghost" id="copyBtn" style="margin-top:10px">Kopiuj podsumowanie</button>
+  </div>
+
+  <div class="card" id="tableCard" style="display:none">
+    <div class="row">
+      <b>Wyniki (top 250)</b>
+      <span class="muted">— eksport CSV zawiera całość</span>
+    </div>
+    <div style="overflow:auto;max-height:460px">
+      <table id="tbl">
+        <thead><tr>
+          <th>ID</th><th>QualityScore</th><th>Flags</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let lastRows = [];
+let lastHeader = [];
+
+function escapeHtml(s){
+  return (s??'').toString()
+    .replaceAll('&','&amp;').replaceAll('<','&lt;')
+    .replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;");
+}
+
+function parseCSV(text, sep){
+  const lines = text.replace(/\r/g,'').split('\n').filter(l=>l.trim().length);
+  if(!lines.length) return {header:[], rows:[]};
+  const header = lines[0].split(sep).map(s=>s.trim());
+  const rows = lines.slice(1).map(line=>{
+    const cells = line.split(sep);
+    const obj = {};
+    header.forEach((h,i)=>obj[h]= (cells[i]??'').trim());
+    return obj;
+  });
+  return {header, rows};
+}
+
+function num(x){
+  const v = (x??'').toString().trim().replace(',','.');
+  if(!v.length) return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+function norm(x){
+  return (x??'').toString().trim().toLowerCase();
+}
+
+function findCol(header, keywords){
+  const kw = keywords.map(k=>k.toLowerCase());
+  return header.find(h=>{
+    const t = h.toLowerCase();
+    return kw.every(k=>t.includes(k));
+  }) || null;
+}
+
+function anyCol(header, keywords){
+  const kw = keywords.map(k=>k.toLowerCase());
+  return header.find(h=>{
+    const t = h.toLowerCase();
+    return kw.some(k=>t.includes(k));
+  }) || null;
+}
+
+function parseCustomRules(text){
+  // Lines like: IF:Status~emeryt; AND:Wiek<40; THEN:Sprzeczność(wiek/status)
+  const lines = (text||'').split('\n').map(l=>l.trim()).filter(l=>l.length);
+  const rules = [];
+  for(const line of lines){
+    try{
+      const parts = line.split(';').map(p=>p.trim());
+      const ifp = parts.find(p=>p.toUpperCase().startsWith('IF:'));
+      const andp = parts.find(p=>p.toUpperCase().startsWith('AND:'));
+      const thenp = parts.find(p=>p.toUpperCase().startsWith('THEN:'));
+      if(!ifp || !thenp) continue;
+
+      const conds = [];
+      const pushCond = (raw)=>{
+        // raw examples: "Wiek<40" OR "Status~emeryt"
+        raw = raw.trim();
+        let op = null;
+        if(raw.includes('~')) op='~';
+        else if(raw.includes('<=')) op='<=';
+        else if(raw.includes('>=')) op='>=';
+        else if(raw.includes('<')) op='<';
+        else if(raw.includes('>')) op='>';
+        else if(raw.includes('=')) op='=';
+        if(!op) return;
+        const [col, val] = raw.split(op).map(s=>s.trim());
+        conds.push({col, op, val});
+      };
+
+      pushCond(ifp.slice(3).trim());
+      if(andp) pushCond(andp.slice(4).trim());
+      const flag = thenp.slice(5).trim() || 'Sprzeczność(custom)';
+      rules.push({conds, flag});
+    }catch(e){}
+  }
+  return rules;
+}
+
+function matchCond(row, cond){
+  const v = row[cond.col];
+  if(v==null) return false;
+  const s = (v??'').toString().trim();
+  const sn = norm(s);
+
+  if(cond.op==='~'){
+    return sn.includes(norm(cond.val));
+  }
+  if(cond.op==='='){
+    return sn === norm(cond.val);
+  }
+  const n = num(s);
+  const c = Number(cond.val);
+  if(n==null || !Number.isFinite(c)) return false;
+  if(cond.op==='<') return n < c;
+  if(cond.op==='>') return n > c;
+  if(cond.op==='<=') return n <= c;
+  if(cond.op==='>=') return n >= c;
+  return false;
+}
+
+function applyBuiltInContradictions(row, header){
+  const flags = [];
+
+  // columns (best guess)
+  const colAge = anyCol(header, ['wiek','age']);
+  const colStatus = anyCol(header, ['status','zawod','praca','employment']);
+  const colIncome = anyCol(header, ['doch','income','zarob']);
+  const colIndustry = anyCol(header, ['bran','industry']);
+  const colKids = anyCol(header, ['dzieci','kids','child']);
+  const colChildAge = header.find(h=>{
+    const t=h.toLowerCase();
+    return t.includes('wiek') && (t.includes('dziec') || t.includes('child'));
+  }) || null;
+  const colPreg = anyCol(header, ['ciąża','ciaza','pregnan']);
+
+  const age = colAge ? num(row[colAge]) : null;
+  const status = colStatus ? norm(row[colStatus]) : '';
+  const income = colIncome ? num(row[colIncome]) : null;
+
+  // Dzieci: nie + wiek dziecka
+  if(colKids && colChildAge){
+    const kids = norm(row[colKids]);
+    const childAgeFilled = (row[colChildAge]||'').toString().trim().length>0;
+    if((kids==='nie' || kids.includes('brak')) && childAgeFilled){
+      flags.push('Sprzeczność(dzieci)');
+    }
+  }
+
+  // Wiek < 18 + status "pełny etat" / "emeryt"
+  if(age!=null && colStatus){
+    const fulltime = status.includes('pełny') || status.includes('pelny') || status.includes('etat') || status.includes('full');
+    const retire = status.includes('emeryt') || status.includes('retir');
+    if(age < 18 && (fulltime || retire)){
+      flags.push('Sprzeczność(wiek/status)');
+    }
+  }
+
+  // Student + wiek > 60
+  if(age!=null && colStatus){
+    const student = status.includes('student') || status.includes('uczeń') || status.includes('uczen');
+    if(student && age > 60){
+      flags.push('Sprzeczność(student/60+)');
+    }
+  }
+
+  // Dochód 0 + pełny etat
+  if(income!=null && colStatus){
+    const fulltime = status.includes('pełny') || status.includes('pelny') || status.includes('etat') || status.includes('full');
+    if(fulltime && income === 0){
+      flags.push('Sprzeczność(income=0/fulltime)');
+    }
+  }
+
+  // Brak pracy + branża podana
+  if(colIndustry && colStatus){
+    const noWork = status.includes('bezrobot') || status.includes('nieprac') || status.includes('nie prac') || status.includes('unemploy');
+    const industryFilled = (row[colIndustry]||'').toString().trim().length>0;
+    if(noWork && industryFilled){
+      flags.push('Sprzeczność(branża/bez pracy)');
+    }
+  }
+
+  // Płeć K/M + ciąża (jeśli takie pytanie jest)
+  const colGender = anyCol(header, ['płeć','plec','gender']);
+  if(colGender && colPreg){
+    const g = norm(row[colGender]);
+    const preg = norm(row[colPreg]);
+    const isPregYes = preg==='tak' || preg.includes('tak') || preg.includes('yes');
+    const male = g.includes('m') || g.includes('male') || g.includes('facet') || g.includes('mężczy') || g.includes('mezczy');
+    if(male && isPregYes){
+      flags.push('Sprzeczność(ciąża/płeć)');
+    }
+  }
+
+  return flags;
+}
+
+function computeQuality(rows, header, opts){
+  const {
+    idcol, timecol,
+    rejectThreshold,
+    pSpeed, pStraight, pContr,
+    straightRatio, straightMin,
+    customRules
+  } = opts;
+
+  const ignore = new Set([idcol, timecol].filter(Boolean));
+  const qCols = header.filter(h => !ignore.has(h));
+
+  // Speeding threshold = median/3
+  const times = (timecol ? rows.map(r=>num(r[timecol])).filter(v=>v!=null && v>0) : []);
+  times.sort((a,b)=>a-b);
+  const median = times.length ? times[Math.floor(times.length/2)] : null;
+  const speedThreshold = (median!=null) ? (median/3) : null;
+
+  const userRules = parseCustomRules(customRules);
+
+  let totalScore = 0;
+  let rejected = 0, contradictions = 0, straight = 0, speed = 0;
+
+  const out = rows.map((r, idx)=>{
+    const id = (idcol && r[idcol]) ? r[idcol] : `R${String(idx+1).padStart(4,'0')}`;
+    let score = 100;
+
+    const flagSet = new Set();
+
+    // speeding
+    if(speedThreshold!=null){
+      const t = num(r[timecol]);
+      if(t!=null && t>0 && t < speedThreshold){
+        score -= pSpeed; flagSet.add('Speeding'); speed++;
+      }
+    }
+
+    // straight-lining
+    const vals = qCols.map(c => (r[c]??'').trim()).filter(v=>v.length);
+    if(vals.length>=straightMin){
+      const freq = {};
+      vals.forEach(v=>freq[v]=(freq[v]||0)+1);
+      const max = Math.max(...Object.values(freq));
+      if(max/vals.length >= straightRatio){
+        score -= pStraight; flagSet.add('Straight-lining'); straight++;
+      }
+    }
+
+    // built-in contradictions
+    const built = applyBuiltInContradictions(r, header);
+    for(const f of built) flagSet.add(f);
+
+    // custom rules
+    for(const rule of userRules){
+      let ok = true;
+      for(const c of rule.conds){
+        if(!matchCond(r, c)){ ok=false; break; }
+      }
+      if(ok) flagSet.add(rule.flag);
+    }
+
+    // contradiction penalty once (even if multiple)
+    const contrFlags = [...flagSet].filter(f=>f.toLowerCase().includes('sprzecz'));
+    if(contrFlags.length){
+      score -= pContr;
+      contradictions += 1; // count per respondent (not per flag)
+    }
+
+    score = Math.max(0, Math.min(100, score));
+    totalScore += score;
+    if(score < rejectThreshold) rejected++;
+
+    return {ID:id, QualityScore:score, Flags:[...flagSet].join(' | ')};
+  });
+
+  const avg = rows.length ? Math.round((totalScore/rows.length)*10)/10 : 0;
+  const rejPct = rows.length ? Math.round((rejected/rows.length)*1000)/10 : 0;
+
+  return {
+    results: out,
+    summary: {avg, rejPct, contradictions, straight, speed, median, speedThreshold, n: rows.length}
+  };
+}
+
+function renderTable(results){
+  const tbody = document.querySelector('#tbl tbody');
+  tbody.innerHTML = '';
+  results.slice(0,250).forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${escapeHtml(r.ID)}</td><td>${r.QualityScore}</td><td>${escapeHtml(r.Flags)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function downloadCSV(results){
+  const header = ['ID','QualityScore','Flags'];
+  const lines = [header.join(';')].concat(results.map(r=>[r.ID,r.QualityScore,r.Flags].join(';')));
+  const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'audyt_wyniki.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('analyze').addEventListener('click', async ()=>{
+  const f = document.getElementById('file').files[0];
+  if(!f){ alert('Wybierz plik CSV'); return; }
+
+  const sep = document.getElementById('sep').value;
+  const idcol = document.getElementById('idcol').value.trim();
+  const timecol = document.getElementById('timecol').value.trim();
+
+  const rejectThreshold = Number(document.getElementById('rejectThreshold').value || 60);
+  const pSpeed = Number(document.getElementById('pSpeed').value || 30);
+  const pStraight = Number(document.getElementById('pStraight').value || 30);
+  const pContr = Number(document.getElementById('pContr').value || 40);
+  const straightRatio = Number(document.getElementById('straightRatio').value || 0.8);
+  const straightMin = Number(document.getElementById('straightMin').value || 8);
+
+  const customRules = document.getElementById('customRules').value;
+
+  const text = await f.text();
+  const parsed = parseCSV(text, sep);
+  lastHeader = parsed.header;
+  if(!parsed.rows.length){ alert('CSV pusty lub zły separator'); return; }
+
+  const {results, summary} = computeQuality(parsed.rows, parsed.header, {
+    idcol, timecol, rejectThreshold, pSpeed, pStraight, pContr, straightRatio, straightMin, customRules
+  });
+
+  lastRows = results;
+
+  document.getElementById('summary').style.display='block';
+  document.getElementById('tableCard').style.display='block';
+
+  document.getElementById('avgScore').textContent = summary.avg;
+  document.getElementById('rejPct').textContent = summary.rejPct + '%';
+  document.getElementById('contr').textContent = summary.contradictions;
+  document.getElementById('straight').textContent = summary.straight;
+  document.getElementById('speed').textContent = summary.speed;
+
+  const copy = `Podsumowanie audytu: próba n=${summary.n}, średni Quality Score ${summary.avg}/100, odpowiedzi niskiej jakości (<${rejectThreshold}) = ${summary.rejPct}%. Sprzeczności (respondenci): ${summary.contradictions}, straight-lining: ${summary.straight}, speeding: ${summary.speed}.`;
+  document.getElementById('copyText').textContent = copy;
+
+  renderTable(results);
+});
+
+document.getElementById('export').addEventListener('click', ()=>{
+  if(!lastRows.length){ alert('Najpierw zrób analizę'); return; }
+  downloadCSV(lastRows);
+});
+
+document.getElementById('copyBtn').addEventListener('click', async ()=>{
+  const t = document.getElementById('copyText').textContent;
+  try{
+    await navigator.clipboard.writeText(t);
+    alert('Skopiowane ✅');
+  }catch(e){
+    alert('Nie mogę skopiować — skopiuj ręcznie.');
+  }
+});
+</script>
+</body>
+  </html>
