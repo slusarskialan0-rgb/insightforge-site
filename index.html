@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InsightForge — Quality-First Survey Platform</title>
+<meta name="description" content="InsightForge — builder ankiet z kontrolą jakości danych i segmentacją 1-klik. Zbieraj lepsze dane i podejmuj lepsze decyzje.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f14;
+  --card:#17171f;
+  --accent:#7c3aed;
+  --accent2:#22c55e;
+  --text:#f5f5f7;
+  --muted:#a1a1aa;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui;
+  background:radial-gradient(circle at 20% 0%, rgba(124,58,237,.25), transparent 40%), var(--bg);
+  color:var(--text);
+}
+.container{max-width:1100px;margin:auto;padding:40px 20px}
+header{display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:900;font-size:22px}
+.btn{
+  padding:12px 20px;
+  border-radius:12px;
+  font-weight:600;
+  text-decoration:none;
+  display:inline-block;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),#4f46e5);
+  color:#fff;
+}
+.hero{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:40px;
+  align-items:center;
+  margin-top:60px;
+}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
+h1{
+  font-size:48px;
+  line-height:1.05;
+  margin-bottom:20px;
+}
+.lead{
+  color:var(--muted);
+  font-size:18px;
+  margin-bottom:30px;
+}
+.card{
+  background:var(--card);
+  padding:25px;
+  border-radius:20px;
+}
+.section{
+  margin-top:100px;
+}
+.features{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.price-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+.price{
+  background:var(--card);
+  padding:30px;
+  border-radius:20px;
+}
+.price h3{margin-top:0}
+.price strong{
+  font-size:36px;
+}
+footer{
+  margin-top:100px;
+  color:var(--muted);
+  font-size:14px;
+  text-align:center;
+}
+.highlight{
+  color:#c4b5fd;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">InsightForge</div>
+  <a href="#kontakt" class="btn btn-primary">Umów demo</a>
+</header>
+
+<section class="hero">
+  <div>
+    <h1>Stop collecting <span class="highlight">bad data</span>.</h1>
+    <p class="lead">
+      InsightForge to platforma ankiet z wbudowanym silnikiem kontroli jakości.
+      Quality Score, wykrywanie sprzeczności i segmentacja 1-klik — zanim podejmiesz decyzję.
+    </p>
+    <a href="#kontakt" class="btn btn-primary">Zobacz demo</a>
+  </div>
+
+  <div class="card">
+    <h3>Quality Score</h3>
+    <p>Każdy respondent otrzymuje ocenę 0–100 na podstawie:</p>
+    <ul>
+      <li>Straight-lining</li>
+      <li>Zbyt szybkie odpowiedzi</li>
+      <li>Sprzeczności logiczne</li>
+      <li>Attention checks</li>
+    </ul>
+    <p><strong>Efekt:</strong> czystsze dane, lepsze decyzje.</p>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Dlaczego InsightForge?</h2>
+  <div class="features">
+    <div class="card">
+      <h3>Quality Engine</h3>
+      <p>Automatyczna ocena jakości danych przed raportem.</p>
+    </div>
+    <div class="card">
+      <h3>Segmentacja 1-klik</h3>
+      <p>Automatyczne grupowanie klientów w 3–5 segmentów.</p>
+    </div>
+    <div class="card">
+      <h3>Raport dla klienta</h3>
+      <p>PDF gotowy do wysłania. Wnioski, nie tabela.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Cennik</h2>
+  <div class="price-grid">
+    <div class="price">
+      <h3>Free</h3>
+      <strong>0 zł</strong>
+      <p>1 ankieta<br>100 odpowiedzi<br>Podstawowy eksport</p>
+    </div>
+    <div class="price">
+      <h3>Pro</h3>
+      <strong>149 zł / mies.</strong>
+      <p>Nielimitowane ankiety<br>Quality Score<br>Segmentacja<br>Raport PDF</p>
+    </div>
+    <div class="price">
+      <h3>Agency</h3>
+      <strong>399 zł / mies.</strong>
+      <p>White-label<br>Multi-user<br>Zaawansowane eksporty</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="kontakt">
+  <h2>Umów demo</h2>
+  <p class="lead">15 minut. Pokażemy, jak podnieść jakość Twoich badań.</p>
+  <a href="mailto:hello@insightforge.app?subject=Demo InsightForge" class="btn btn-primary">
+    hello@insightforge.app
+  </a>
+</section>
+
+<footer>
+  © <script>document.write(new Date().getFullYear())</script> InsightForge
+</footer>
+
+</div>
+</body>
+  </html>
