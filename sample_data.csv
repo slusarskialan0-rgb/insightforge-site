@@ -1,0 +1,11 @@
+RespondentID;Q1_Satysfakcja_1_5;Q2_NPS_0_10;Q3_Zakupy_czestotliwosc;Q4_Dzieci;Q5_WiekDziecka;Flags;QualityScore
+R001;5;9;Kilka razy w tygodniu;Tak;6;;92
+R002;4;8;Kilka razy w miesiącu;Nie;;Sprzeczność(wiek dziecka);41
+R003;5;10;Kilka razy w tygodniu;Tak;4;;95
+R004;1;0;Rzadko;Nie;;Straight-lining;28
+R005;4;7;Kilka razy w miesiącu;Nie;;Speeding;35
+R006;5;9;Kilka razy w tygodniu;Tak;8;;90
+R007;4;8;Kilka razy w miesiącu;Nie;; ;78
+R008;5;9;Kilka razy w tygodniu;Tak;5;;91
+R009;2;2;Rzadko;Nie;;Straight-lining;30
+R010;4;8;Kilka razy w miesiącu;Nie;; ;80
