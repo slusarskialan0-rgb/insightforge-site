@@ -3,101 +3,147 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>InsightForge — Demo Dashboard</title>
+<title>InsightForge — Audyt jakości danych z ankiety (48h)</title>
+<meta name="description" content="Audyt jakości danych z ankiety w 48h: Quality Score 0–100, sprzeczności, speeding, straight-lining, raport PDF + rekomendacje. Cena pilota: 999 zł netto." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0b10; --card:#141422; --text:#f4f4f7; --muted:#a7a7b4;
+    --bg:#0f0f14;
+    --card:#17171f;
     --line:rgba(255,255,255,.10);
-    --accent:#7c3aed; --accent2:#22c55e; --warn:#f59e0b; --bad:#f87171;
-    --radius:18px;
+    --text:#f5f5f7;
+    --muted:#a1a1aa;
+    --accent:#7c3aed;
+    --accent2:#22c55e;
+    --warn:#f59e0b;
+    --bad:#f87171;
+    --radius:20px;
   }
   *{box-sizing:border-box}
   body{
-    margin:0; font-family:Arial,system-ui;
+    margin:0;
+    font-family:Inter,system-ui,Arial;
     background:radial-gradient(900px 600px at 15% 0%, rgba(124,58,237,.25), transparent 55%),
                radial-gradient(800px 500px at 90% 0%, rgba(34,197,94,.18), transparent 50%),
                var(--bg);
     color:var(--text);
   }
-  .wrap{max-width:1100px;margin:0 auto;padding:34px 18px 70px}
+  .wrap{max-width:1000px;margin:0 auto;padding:34px 18px 90px}
   .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
   .brand{display:flex;align-items:center;gap:12px;font-weight:900}
   .logo{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#4f46e5);box-shadow:0 18px 45px rgba(124,58,237,.25)}
   .pill{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);padding:7px 10px;border-radius:999px;font-size:12px}
-  .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:16px}
+  h1{font-size:34px;line-height:1.05;margin:18px 0 10px}
+  .lead{color:var(--muted);font-size:16px;line-height:1.55;margin:0 0 18px}
+  .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:14px}
   @media(max-width:980px){.grid{grid-template-columns:1fr}}
-  .card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
-  h1{font-size:30px;margin:14px 0 8px}
-  h2{font-size:18px;margin:0 0 10px}
-  .muted{color:var(--muted);line-height:1.45}
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  @media(max-width:980px){.stats{grid-template-columns:1fr}}
-  .stat .lbl{color:var(--muted);font-size:12px}
-  .stat .val{font-size:34px;font-weight:900;margin-top:6px}
-  .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:10px}
-  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width 900ms ease}
-  .kpiRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-  .kpi{border:1px solid var(--line);background:rgba(0,0,0,.20);padding:10px 12px;border-radius:14px}
-  .kpi b{font-size:14px}
-  .kpi span{color:var(--muted);font-size:12px}
-  .seg{display:grid;gap:10px}
-  .seg .item{border:1px solid var(--line);background:rgba(0,0,0,.18);padding:12px 14px;border-radius:16px}
-  .tag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted)}
-  .good{color:var(--accent2)} .bad{color:var(--bad)} .warn{color:var(--warn)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 14px;border-radius:14px;
-       border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font-weight:700;text-decoration:none}
+  .card{
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px;
+  }
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:12px 16px;border-radius:14px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.03);
+    color:var(--text);
+    font-weight:800;
+    text-decoration:none;
+  }
   .btn.primary{background:linear-gradient(135deg,var(--accent),#4f46e5);border-color:transparent}
   .btn:hover{filter:brightness(1.05)}
+  .kpiRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .tag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted)}
   .hr{height:1px;background:var(--line);margin:14px 0}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:980px){.stats{grid-template-columns:1fr}}
+  .lbl{color:var(--muted);font-size:12px}
+  .val{font-size:34px;font-weight:900;margin-top:6px}
+  .good{color:var(--accent2)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+  .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:10px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width 900ms ease}
+  .list{margin:8px 0 0;padding-left:18px;color:var(--muted);line-height:1.55}
+  .box{border:1px dashed rgba(255,255,255,.18);border-radius:16px;padding:14px 14px;background:rgba(0,0,0,.16)}
+  .mini{font-size:12px;color:var(--muted);line-height:1.45}
+  .price{font-weight:900;color:#c4b5fd}
+  .faq .q{font-weight:900;margin:0 0 6px}
+  .faq .a{margin:0;color:var(--muted);line-height:1.55}
+  .sticky{
+    position:fixed;left:0;right:0;bottom:0;
+    background:rgba(15,15,20,.92);
+    backdrop-filter:blur(10px);
+    border-top:1px solid rgba(255,255,255,.08);
+    padding:12px 16px;display:flex;gap:10px;justify-content:center;z-index:9999;
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <div class="top">
-    <div class="brand"><div class="logo"></div> InsightForge <span class="pill">DEMO • Quality Score • Segmenty • Raport</span></div>
-    <div class="kpiRow">
-      <span class="tag">Próba: <b>120</b></span>
-      <span class="tag">Po filtracji: <b>96</b></span>
-      <span class="tag">Czas ankiety: <b>3:40</b></span>
-    </div>
+    <div class="brand"><div class="logo"></div> InsightForge <span class="pill">DEMO • Audyt 48h</span></div>
+    <span class="pill">Dla agencji / e-commerce / SaaS</span>
   </div>
 
-  <h1>Dashboard — jakość danych zanim podejmiesz decyzję</h1>
-  <p class="muted">To jest demo. W produkcie te wskaźniki liczą się automatycznie dla każdej ankiety i każdego respondenta.</p>
+  <h1>Audyt jakości danych z ankiety w 48h</h1>
+  <p class="lead">
+    Sprawdzamy, ile odpowiedzi to <b>noise</b> (przypadkowe klikanie, sprzeczności, “speeding”)
+    i czy Twoje wnioski mają sens. Dostajesz <b>Quality Score 0–100</b> + PDF raport + 3 rekomendacje.
+  </p>
+
+  <div class="card box">
+    <div class="kpiRow">
+      <span class="tag">⏱ realizacja: <b>48h</b></span>
+      <span class="tag">📄 raport: <b>PDF-ready</b></span>
+      <span class="tag">💰 cena pilota: <b class="price">999 zł netto</b></span>
+      <span class="tag">✅ jeśli brak wartości: <b>bez faktury</b></span>
+    </div>
+    <div class="btnRow">
+      <a class="btn primary" href="mailto:TWÓJ_MAIL@DOMENA.PL?subject=Zamówienie%20audytu%20jakości%20ankiety%20(48h)&body=Cześć,%0A%0AChcę%20zamówić%20audyt%20jakości%20danych%20z%20ankiety.%0A%0A1)%20Branża:%20...%0A2)%20Link%20do%20ankiety%20lub%20opis:%20...%0A3)%20Plik%20CSV/Excel%20z%20odpowiedziami%20(dodam%20w%20załączniku)%0A4)%20Czy%20jest%20czas%20wypełnienia:%20tak/nie%0A%0ADziękuję!">
+        Zamów audyt (mail)
+      </a>
+      <a class="btn" href="#jak">Jak to działa</a>
+      <a class="btn" href="#faq">FAQ</a>
+    </div>
+    <p class="mini" style="margin:10px 0 0;">
+      Podmień <b>TWÓJ_MAIL@DOMENA.PL</b> na swój mail w pliku demo.html.
+    </p>
+  </div>
 
   <div class="grid">
     <div class="card">
+      <h2 style="margin:0 0 10px;">Przykładowy wynik (demo)</h2>
+
       <div class="stats">
-        <div class="stat">
+        <div>
           <div class="lbl">Quality Score (średnia)</div>
-          <div class="val"><span class="good">82</span><span class="muted">/100</span></div>
+          <div class="val"><span class="good">82</span><span style="color:var(--muted)">/100</span></div>
           <div class="bar"><i id="qbar"></i></div>
-          <div class="muted" style="margin-top:8px">Wzrost po filtracji: <span class="good">+14</span></div>
+          <div class="mini" style="margin-top:8px">Po filtracji jakości danych</div>
         </div>
 
-        <div class="stat">
+        <div>
           <div class="lbl">Odrzucone odpowiedzi</div>
           <div class="val"><span class="bad">18%</span></div>
-          <div class="muted">Straight-lining, speeding, niska wariancja</div>
-          <div class="hr"></div>
-          <div class="muted">To jest „noise”, który psuje raport.</div>
+          <div class="mini">straight-lining • speeding • niska wariancja</div>
         </div>
 
-        <div class="stat">
+        <div>
           <div class="lbl">Sprzeczności wykryte</div>
           <div class="val"><span class="warn">7</span></div>
-          <div class="muted">np. „brak dzieci” + „wiek dziecka”</div>
-          <div class="hr"></div>
-          <div class="muted">Do audytu lub odrzucenia.</div>
+          <div class="mini">np. „brak dzieci” + „wiek dziecka”</div>
         </div>
       </div>
 
       <div class="hr"></div>
 
-      <h2>Rekomendacja (na podstawie czystych danych)</h2>
-      <p class="muted">
-        Największy wpływ na wynik ma segment <b>Price Sensitive</b> — uprość checkout i pokaż koszt dostawy wcześniej.
-        To redukuje porzucenia koszyka i poprawia konwersję.
+      <h2 style="margin:0 0 8px;">Rekomendacja (z czystych danych)</h2>
+      <p class="lead" style="margin:0;">
+        Największy wpływ na wynik ma segment wrażliwy na cenę i prostotę.
+        <b>Pokaż koszt dostawy wcześniej</b> i <b>skrót checkout o 1 krok</b>.
       </p>
 
       <div class="kpiRow">
@@ -105,53 +151,90 @@
         <span class="tag">NPS przed filtracją: <b>33</b></span>
         <span class="tag">Różnica: <b class="good">+14</b></span>
       </div>
-
-      <div class="hr"></div>
-
-      <a class="btn primary" href="report.html">Otwórz raport (PDF-ready)</a>
-      <a class="btn" href="sample_data.csv" style="margin-left:8px">Pobierz dane (CSV)</a>
     </div>
 
     <div class="card">
-      <h2>Segmenty (1-klik)</h2>
-      <div class="seg">
-        <div class="item">
-          <div style="font-weight:900">Premium Loyal <span class="tag">28%</span></div>
-          <div class="muted">Wysoka satysfakcja • niska wrażliwość cenowa • najwyższy NPS</div>
-        </div>
-        <div class="item">
-          <div style="font-weight:900">Price Sensitive <span class="tag">34%</span></div>
-          <div class="muted">Promocje + cena • wysoka porzucalność koszyka • potrzebują prostoty</div>
-        </div>
-        <div class="item">
-          <div style="font-weight:900">Heavy Digital <span class="tag">21%</span></div>
-          <div class="muted">Mobile-first • częste zakupy • wrażliwi na UX i szybkość</div>
-        </div>
-        <div class="item">
-          <div style="font-weight:900">Sceptyczni <span class="tag">17%</span></div>
-          <div class="muted">Niższe zaufanie • potrzebują dowodu wartości • mocne argumenty</div>
-        </div>
-      </div>
+      <h2 style="margin:0 0 10px;">Co wykrywamy w audycie</h2>
+      <ul class="list">
+        <li><b>Speeding</b> — podejrzanie szybkie wypełnienia</li>
+        <li><b>Straight-lining</b> — klikanie w kółko tego samego</li>
+        <li><b>Sprzeczności logiczne</b> między pytaniami</li>
+        <li><b>Niska spójność</b> demografii / zachowań</li>
+      </ul>
 
       <div class="hr"></div>
-      <h2>Co InsightForge robi inaczej</h2>
-      <p class="muted">
-        Typeform/Formularze zbierają odpowiedzi. InsightForge ocenia, czy można im ufać — zanim zrobisz raport.
-      </p>
-      <div class="kpiRow">
-        <span class="pill">Quality Score 0–100</span>
-        <span class="pill">Wykrywanie sprzeczności</span>
-        <span class="pill">Segmentacja</span>
-        <span class="pill">Raport</span>
-      </div>
+
+      <h2 style="margin:0 0 10px;">Co dostajesz</h2>
+      <ul class="list">
+        <li>Quality Score 0–100 + próg filtracji</li>
+        <li>% odpowiedzi niskiej jakości</li>
+        <li>Lista podejrzanych rekordów (do odrzucenia)</li>
+        <li>PDF raport + 3 rekomendacje</li>
+      </ul>
     </div>
   </div>
+
+  <div class="card" id="jak" style="margin-top:14px;">
+    <h2 style="margin:0 0 10px;">Jak to działa (3 kroki)</h2>
+    <ol class="list">
+      <li>Wysyłasz CSV/Excel z odpowiedziami + listę pytań (lub link do ankiety).</li>
+      <li>Robimy audyt jakości (speeding/straight-lining/sprzeczności) i liczymy Quality Score.</li>
+      <li>Dostajesz PDF raport + rekomendacje w 48h.</li>
+    </ol>
+
+    <div class="hr"></div>
+
+    <h2 style="margin:0 0 10px;">Co potrzebujemy od Ciebie</h2>
+    <div class="box">
+      <ul class="list" style="margin:0;">
+        <li>CSV/Excel z odpowiedziami</li>
+        <li>(opcjonalnie) czas wypełnienia / timestampy</li>
+        <li>lista pytań / link do ankiety</li>
+        <li>cel badania (1 zdanie)</li>
+      </ul>
+    </div>
+
+    <div class="btnRow">
+      <a class="btn primary" href="mailto:TWÓJ_MAIL@DOMENA.PL?subject=Zamówienie%20audytu%20(48h)">
+        Zamów audyt teraz
+      </a>
+      <a class="btn" href="report.html">Pokaż raport (PDF-ready)</a>
+      <a class="btn" href="sample_data.csv">Pobierz przykładowe dane (CSV)</a>
+    </div>
+  </div>
+
+  <div class="card faq" id="faq" style="margin-top:14px;">
+    <h2 style="margin:0 0 10px;">FAQ (krótko)</h2>
+
+    <p class="q">Czy to jest legalne?</p>
+    <p class="a">Tak — to audyt jakości danych, jak kontrola jakości w raporcie. Nie automatyzujemy wypełniania ankiet. Poprawiamy wiarygodność wyników.</p>
+
+    <div class="hr"></div>
+
+    <p class="q">Ile to trwa?</p>
+    <p class="a">Standardowo 48h od otrzymania pliku. Przy dużych próbach ustalimy termin.</p>
+
+    <div class="hr"></div>
+
+    <p class="q">Co jeśli wyjdzie, że dane są OK?</p>
+    <p class="a">Dostajesz potwierdzenie jakości + rekomendacje jak utrzymać standard (attention check, progi czasu, reguły spójności).</p>
+
+    <div class="hr"></div>
+
+    <p class="q">Jak wygląda wynik?</p>
+    <p class="a">PDF raport + liczby (Quality Score, % odrzuceń, sprzeczności) + 3 rekomendacje wdrożeniowe.</p>
+  </div>
+
+</div>
+
+<div class="sticky">
+  <a class="btn primary" href="mailto:TWÓJ_MAIL@DOMENA.PL?subject=Zamówienie%20audytu%20(48h)">Zamów audyt</a>
+  <a class="btn" href="index.html#kontakt">Kontakt</a>
 </div>
 
 <script>
-  // animacja paska jakości (dla efektu na demo)
   const bar = document.getElementById("qbar");
   setTimeout(()=>{ bar.style.width = "82%"; }, 250);
 </script>
 </body>
-</html>
+  </html>
