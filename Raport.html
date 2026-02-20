@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>InsightForge — Raport</title>
+<style>
+  body{font-family:Arial,system-ui;margin:0;background:#fff;color:#111}
+  .wrap{max-width:900px;margin:0 auto;padding:26px 18px}
+  h1{margin:0 0 6px}
+  .muted{color:#555;line-height:1.5}
+  .box{border:1px solid #ddd;border-radius:12px;padding:14px 16px;margin:14px 0}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:800px){.grid{grid-template-columns:1fr}}
+  .kpi{font-weight:800;font-size:18px}
+  ul{margin:8px 0 0;padding-left:18px}
+  .tag{display:inline-block;border:1px solid #ddd;border-radius:999px;padding:6px 10px;margin:6px 8px 0 0;font-size:12px;color:#333}
+  .hr{height:1px;background:#eee;margin:16px 0}
+  @media print{ .noprint{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="noprint" style="margin-bottom:12px">
+    <button onclick="window.print()">Drukuj / Zapisz jako PDF</button>
+  </div>
+
+  <h1>Raport InsightForge</h1>
+  <div class="muted">Projekt: Demo • Data: <script>document.write(new Date().toLocaleDateString('pl-PL'))</script></div>
+
+  <div class="box grid">
+    <div>
+      <div class="muted">Średni Quality Score</div>
+      <div class="kpi">82 / 100</div>
+      <div class="muted">Po filtracji jakości danych</div>
+    </div>
+    <div>
+      <div class="muted">Odrzucone odpowiedzi</div>
+      <div class="kpi">18%</div>
+      <div class="muted">Straight-lining / speeding / niska wariancja</div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="kpi">Najważniejsze wnioski (CEO-friendly)</div>
+    <ul>
+      <li>Największy problem: niepewność ceny końcowej (dostawa/zwroty) + zbyt długi checkout.</li>
+      <li>Największa przewaga: szybkość realizacji i dostępność produktów.</li>
+      <li>Rekomendacja: pokaż koszt dostawy wcześniej + skróć checkout o 1 krok.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="kpi">Segmentacja (1-klik)</div>
+    <div class="tag">Premium Loyal (28%)</div>
+    <div class="tag">Price Sensitive (34%)</div>
+    <div class="tag">Heavy Digital (21%)</div>
+    <div class="tag">Sceptyczni (17%)</div>
+    <div class="hr"></div>
+    <ul>
+      <li><b>Premium Loyal</b>: najwyższy NPS, niska wrażliwość cenowa — segment do skalowania.</li>
+      <li><b>Price Sensitive</b>: reagują na promocje, mocny wpływ UX/cena na konwersję.</li>
+      <li><b>Heavy Digital</b>: mobile-first, szybkie decyzje — liczy się prostota i szybkość.</li>
+      <li><b>Sceptyczni</b>: wymagają dowodu wartości — lepsza komunikacja i social proof.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="kpi">Co daje Quality Engine</div>
+    <ul>
+      <li>Wiarygodne dane → mniejsze ryzyko błędnych decyzji.</li>
+      <li>Wyższa wartość raportu dla klienta (szczególnie w agencji).</li>
+      <li>Szybszy proces: mniej ręcznego czyszczenia.</li>
+    </ul>
+  </div>
+
+  <div class="muted">© InsightForge — wersja demo</div>
+</div>
+</body>
+  </html>
