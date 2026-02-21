@@ -1,291 +1,279 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>InsightForge — Quality-First Survey Platform</title>
-<meta name="description" content="InsightForge — builder ankiet z kontrolą jakości danych i segmentacją 1-klik. Zbieraj lepsze dane i podejmuj lepsze decyzje.">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0f0f14;
-  --card:#17171f;
-  --accent:#7c3aed;
-  --accent2:#22c55e;
-  --text:#f5f5f7;
-  --muted:#a1a1aa;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter,system-ui;
-  background:radial-gradient(circle at 20% 0%, rgba(124,58,237,.25), transparent 40%), var(--bg);
-  color:var(--text);
-}
-.container{max-width:1100px;margin:auto;padding:40px 20px}
-header{display:flex;justify-content:space-between;align-items:center}
-.logo{font-weight:900;font-size:22px}
-.btn{
-  padding:12px 20px;
-  border-radius:12px;
-  font-weight:600;
-  text-decoration:none;
-  display:inline-block;
-}
-.btn-primary{
-  background:linear-gradient(135deg,var(--accent),#4f46e5);
-  color:#fff;
-}
-.hero{
-  display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:40px;
-  align-items:center;
-  margin-top:60px;
-}
-@media(max-width:900px){.hero{grid-template-columns:1fr}}
-h1{
-  font-size:48px;
-  line-height:1.05;
-  margin-bottom:20px;
-}
-.lead{
-  color:var(--muted);
-  font-size:18px;
-  margin-bottom:30px;
-}
-.card{
-  background:var(--card);
-  padding:25px;
-  border-radius:20px;
-}
-.section{
-  margin-top:100px;
-}
-.features{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:20px;
-}
-.price-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:20px;
-}
-.price{
-  background:var(--card);
-  padding:30px;
-  border-radius:20px;
-}
-.price h3{margin-top:0}
-.price strong{
-  font-size:36px;
-}
-footer{
-  margin-top:100px;
-  color:var(--muted);
-  font-size:14px;
-  text-align:center;
-}
-.highlight{
-  color:#c4b5fd;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>InsightForge — Audyt Jakości Próby Badawczej</title>
+  <meta name="description" content="Audyt jakości próby badawczej: speeding, straight-lining, sprzeczności, scoring jakości. Raport w 48h. Cena 899 zł netto." />
+
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --card:#11131a;
+      --text:#eaeef7;
+      --muted:#a9b2c7;
+      --line:#232738;
+      --accent:#7c5cff;
+      --accent2:#00d4ff;
+      --ok:#27d18a;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 80% -10%, rgba(124,92,255,.25), transparent 60%),
+        radial-gradient(900px 600px at 10% 10%, rgba(0,212,255,.18), transparent 55%),
+        linear-gradient(180deg, #07080c, #0b0c10);
+    }
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px 16px 80px}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 16px;border:1px solid var(--line);
+      background:rgba(17,19,26,.6);backdrop-filter: blur(10px);
+      border-radius:16px;position:sticky;top:14px;z-index:10;
+    }
+    .brand{display:flex;gap:10px;align-items:center}
+    .logo{
+      width:34px;height:34px;border-radius:10px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 8px 30px rgba(124,92,255,.25);
+    }
+    .brand b{letter-spacing:.3px}
+    .navlinks{display:flex;gap:14px;flex-wrap:wrap}
+    .nav a{
+      text-decoration:none;color:var(--muted);
+      padding:8px 10px;border-radius:10px;
+    }
+    .nav a:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .hero{padding:44px 10px 10px;display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:stretch}
+    .card{
+      background:rgba(17,19,26,.75);
+      border:1px solid var(--line);
+      border-radius:18px;padding:22px;
+      box-shadow:0 18px 50px rgba(0,0,0,.35);
+    }
+    h1{margin:0 0 10px;font-size:34px;line-height:1.1}
+    .sub{color:var(--muted);font-size:15px;line-height:1.6;margin:0 0 16px}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .badge{
+      font-size:12px;color:var(--text);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      padding:8px 10px;border-radius:999px;
+    }
+    .ctaRow{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .btn{
+      display:inline-flex;gap:10px;align-items:center;justify-content:center;
+      border-radius:14px;padding:12px 14px;
+      text-decoration:none;border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);font-weight:650;
+    }
+    .btn.primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      border-color:transparent;
+      box-shadow:0 16px 40px rgba(124,92,255,.25);
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .mini{font-size:12px;color:var(--muted);margin-top:10px}
+    .priceBox{
+      display:flex;flex-direction:column;gap:12px;height:100%;
+    }
+    .price{
+      font-size:34px;font-weight:800;
+    }
+    .price small{font-size:13px;color:var(--muted);font-weight:600}
+    .tick{display:flex;gap:10px;align-items:flex-start;color:var(--muted);font-size:14px;line-height:1.5}
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--ok);margin-top:5px;flex:0 0 auto}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+    .grid .card h3{margin:0 0 10px;font-size:16px}
+    .grid .card p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+    .section{margin-top:28px}
+    .section h2{margin:0 0 12px;font-size:22px}
+    .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .list{margin:0;padding-left:18px;color:var(--muted);line-height:1.8}
+    .faq details{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;padding:12px 14px;margin-bottom:10px;
+    }
+    .faq summary{cursor:pointer;font-weight:700}
+    .faq p{color:var(--muted);margin:10px 0 0;line-height:1.6}
+    .footer{
+      margin-top:34px;
+      border-top:1px solid var(--line);
+      padding-top:18px;color:var(--muted);font-size:13px;
+      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .pill{
+      display:inline-block;border:1px solid var(--line);
+      padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.03);
+    }
+    @media (max-width: 880px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .cols{grid-template-columns:1fr}
+      h1{font-size:30px}
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
+  <div class="wrap">
 
-<header>
-  <div class="logo">InsightForge</div>
-  <a href="#kontakt" class="btn btn-primary">zamów audyt</a>
-</header>
-
-<section class="hero">
-  <div>
- <h1>Audyt jakości danych z ankiet w 48h</h1>
-    <p class="lead">
-      InsightForge Audytujemy Twoją ankietę i w 48h pokażemy,
-czy raport opiera się na wiarygodnych danych,
-czy na przypadkowych kliknięciach..
-    </p>
-    <a href="#kontakt" class="btn btn-primary">Zobacz audyt</a>
-  </div>
-
-  <div class="card">
-    <h3>Quality Score</h3>
-    <p>Każdy respondent otrzymuje ocenę 0–100 na podstawie:</p>
-    <ul>
-      <li>Straight-lining</li>
-      <li>Zbyt szybkie odpowiedzi</li>
-      <li>Sprzeczności logiczne</li>
-      <li>Attention checks</li>
-    </ul>
-    <p><strong>Efekt:</strong> czystsze dane, lepsze decyzje.</p>
-  </div>
-</section>
-
-<section class="section">
-  <h2>Dlaczego InsightForge?</h2>
-  <div class="features">
-    <div class="card">
-      <h3>Quality Engine</h3>
-      <p>Automatyczna ocena jakości danych przed raportem.</p>
-    </div>
-    <div class="card">
-      <h3>Segmentacja 1-klik</h3>
-      <p>Automatyczne grupowanie klientów w 3–5 segmentów.</p>
-    </div>
-    <div class="card">
-      <h3>Raport dla klienta</h3>
-      <p>PDF gotowy do wysłania. Wnioski, nie tabela.</p>
-    </div>
-  </div>
-</section>
-<section class="section">
-  <h2>Dlaczego InsightForge powstał?</h2>
-
-  <div class="card">
-    <p>
-      Większość firm zbiera feedback.
-      Mało która wie, czy te dane są w ogóle wiarygodne.
-    </p>
-
-    <p>
-      InsightForge powstał, bo agencje i e-commerce podejmują decyzje
-      na podstawie danych, które często są:
-    </p>
-
-    <ul>
-      <li>❌ losowe</li>
-      <li>❌ niespójne</li>
-      <li>❌ wypełniane „na szybko”</li>
-      <li>❌ bez realnej wartości strategicznej</li>
-    </ul>
-
-    <p>
-      Dlatego zbudowaliśmy system, który:
-    </p>
-
-    <ul>
-      <li>✔ ocenia jakość każdej odpowiedzi (0–100)</li>
-      <li>✔ wykrywa sprzeczności</li>
-      <li>✔ usuwa śmieciowe dane</li>
-      <li>✔ segmentuje klientów automatycznie</li>
-    </ul>
-
-    <p style="color:#c4b5fd;font-weight:600;">
-      Zbierasz mniej danych.  
-      Podejmujesz lepsze decyzje.
-      <div style="margin-top:25px;">
-  <a href="#kontakt" class="btn btn-primary">
-    Sprawdź, jak to wygląda na Twoich danych
-  </a>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <b>InsightForge</b><br>
+          <span style="color:var(--muted);font-size:12px;">Audyt jakości próby</span>
+        </div>
       </div>
-    </p>
+      <div class="navlinks">
+        <a href="#oferta">Oferta</a>
+        <a href="#case">Case study</a>
+        <a href="#faq">FAQ</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="card">
+        <h1>Audyt Jakości Próby Badawczej</h1>
+        <p class="sub">
+          W 48h sprawdzam jakość odpowiedzi w ankiecie: <b>speeding</b>, <b>straight-lining</b>, <b>sprzeczności</b> + scoring jakości.
+          Dostajesz konkretną listę rekordów do odrzucenia i rekomendację filtracji.
+        </p>
+
+        <div class="badges">
+          <span class="badge">do 1000 odpowiedzi</span>
+          <span class="badge">raport PDF 5–7 stron</span>
+          <span class="badge">lista rekordów (CSV)</span>
+          <span class="badge">48h realizacji</span>
+        </div>
+
+        <div class="ctaRow">
+          <a class="btn primary" href="mailto:slusarskialan0@gmail.com?subject=Zam%C3%B3wienie%20audytu%20-%20899%20z%C5%82&body=Dzie%C5%84%20dobry%2C%0A%0AChc%C4%99%20zam%C3%B3wi%C4%87%20Audyt%20Jako%C5%9Bci%20Pr%C3%B3by%20Badawczej%20(899%20z%C5%82%20netto).%0A%0A1)%20Firma%3A%20____%0A2)%20Liczba%20odpowiedzi%3A%20____%0A3)%20Plik%20CSV%2FXLSX%3A%20(dodam%20w%20za%C5%82%C4%85czniku)%0A4)%20Czy%20jest%20czas%20wype%C5%82nienia%3A%20tak%2Fnie%0A%0APozdrawiam%2C%0A">
+            Zamów audyt
+          </a>
+
+          <a class="btn" href="mailto:slusarskialan0@gmail.com?subject=Audyt%20Jako%C5%9Bci%20Pr%C3%B3by%20-%20pytanie">Napisz pytanie</a>
+
+          <!-- PDF-y: wrzuć do folderu assets w repo (instrukcja poniżej) -->
+          <a class="btn" href="assets/InsightForge_Oferta_Audyt_899zl_PL.pdf" target="_blank" rel="noopener">Pobierz ofertę PDF</a>
+          <a class="btn" href="assets/InsightForge_Case_Study_Audyt_Jakosci_Proby_PL.pdf" target="_blank" rel="noopener">Pobierz case study PDF</a>
+        </div>
+
+        <p class="mini">
+          * Dane mogą być zanonimizowane (bez imion, maili, telefonów). Pracuję na CSV/XLSX.
+        </p>
+      </div>
+
+      <div class="card priceBox" id="oferta">
+        <div>
+          <div style="color:var(--muted);font-weight:650;">Cena stała</div>
+          <div class="price">899 zł <small>netto</small></div>
+          <div class="pill">Czas: 48h od otrzymania danych</div>
+        </div>
+
+        <div class="tick"><span class="dot"></span><span>Speeding (czas wypełnienia vs próba)</span></div>
+        <div class="tick"><span class="dot"></span><span>Straight-lining (powtarzalne wzorce)</span></div>
+        <div class="tick"><span class="dot"></span><span>Sprzeczności logiczne</span></div>
+        <div class="tick"><span class="dot"></span><span>Scoring jakości 0–100</span></div>
+        <div class="tick"><span class="dot"></span><span>Lista rekordów do odrzucenia (CSV)</span></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Co dostajesz</h3>
+        <p>Raport PDF (5–7 stron) + lista rekordów do odrzucenia + rekomendacja filtrowania.</p>
+      </div>
+      <div class="card">
+        <h3>Dla kogo</h3>
+        <p>Agencje marketingowe, UX/CRO, firmy badawcze, zespoły produktowe raportujące wyniki.</p>
+      </div>
+      <div class="card">
+        <h3>Po co</h3>
+        <p>Żeby nie podejmować decyzji na „przeklikanej” próbie i nie raportować śmieciowych danych.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="card">
+        <h2>Jak to działa (3 kroki)</h2>
+        <div class="cols">
+          <div>
+            <ol class="list">
+              <li>Wysyłasz CSV/XLSX (anonimowo, bez danych wrażliwych).</li>
+              <li>Robię audyt jakości: speeding, wzorce, sprzeczności, scoring.</li>
+              <li>Dostajesz raport PDF + listę rekordów do odrzucenia.</li>
+            </ol>
+          </div>
+          <div>
+            <ul class="list">
+              <li>Format danych: CSV / XLSX</li>
+              <li>Limit: do 1000 odpowiedzi</li>
+              <li>Termin: 48 godzin</li>
+              <li>Wynik: konkretna filtracja + rekomendacja</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="case">
+      <div class="card">
+        <h2>Case study</h2>
+        <p class="sub">
+          Przykładowy raport (anonimowy) pobierzesz w PDF powyżej.
+        </p>
+      </div>
+    </div>
+
+    <div class="section faq" id="faq">
+      <h2>FAQ</h2>
+
+      <details>
+        <summary>Czy muszę wysyłać dane wrażliwe?</summary>
+        <p>Nie. Wystarczy eksport CSV/XLSX bez imion, maili, telefonów. Liczą się odpowiedzi i struktura pytań.</p>
+      </details>
+
+      <details>
+        <summary>Co jeśli mam więcej niż 1000 odpowiedzi?</summary>
+        <p>Wtedy robimy wycenę indywidualną. Napisz maila — ustalimy zakres.</p>
+      </details>
+
+      <details>
+        <summary>Czy dostanę listę rekordów do odrzucenia?</summary>
+        <p>Tak — dostajesz listę identyfikatorów/wierszy w CSV + rekomendowany próg filtracji.</p>
+      </details>
+    </div>
+
+    <div class="section" id="kontakt">
+      <div class="card">
+        <h2>Kontakt</h2>
+        <p class="sub">Najszybciej: kliknij „Zamów audyt” i wyślij maila z plikiem CSV/XLSX.</p>
+        <div class="ctaRow">
+          <a class="btn primary" href="mailto:slusarskialan0@gmail.com?subject=Zam%C3%B3wienie%20audytu%20-%20899%20z%C5%82">Zamów audyt</a>
+          <a class="btn" href="mailto:slusarskialan0@gmail.com?subject=Audyt%20-%20pytanie">Napisz mail</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>© <span id="y"></span> InsightForge</div>
+      <div class="pill">Audyt jakości próby badawczej — 899 zł netto</div>
+    </div>
+
   </div>
-</section>
-<section class="section">
-  <section class="section">
-  <h2>Dla kogo jest InsightForge?</h2>
-  <p class="lead">Jeśli zbierasz feedback i chcesz decyzji, a nie tabeli — to jest dla Ciebie.</p>
 
-  <div class="features">
-    <div class="card">
-      <h3>Agencje marketingowe</h3>
-      <p>Sprzedajesz klientowi nie ankietę, tylko <b>insight + kontrolę jakości</b>. Raport gotowy do wysyłki.</p>
-      <p style="color:#c4b5fd;font-weight:600;margin:0;">➡ Wyższe stawki i retencja klientów</p>
-    </div>
-
-    <div class="card">
-      <h3>E-commerce</h3>
-      <p>Wiesz, <b>dlaczego ludzie nie kupują</b> i co blokuje koszyk. Segmenty pokazują, co działa na kogo.</p>
-      <p style="color:#c4b5fd;font-weight:600;margin:0;">➡ Większa konwersja i mniej zwrotów</p>
-    </div>
-
-    <div class="card">
-      <h3>SaaS / Aplikacje</h3>
-      <p>NPS + jakość danych. Szybko wyłapujesz prawdziwe problemy UX i powody churnu.</p>
-      <p style="color:#c4b5fd;font-weight:600;margin:0;">➡ Lepszy onboarding i retencja</p>
-    </div>
-
-    <div class="card">
-      <h3>HR / Badania pracownicze</h3>
-      <p>Wiarygodne ankiety i wykrywanie niespójności. Sygnały ostrzegawcze zanim będzie problem.</p>
-      <p style="color:#c4b5fd;font-weight:600;margin:0;">➡ Mniej rotacji, lepszy klimat</p>
-    </div>
-  </div>
-
-  <div style="margin-top:25px;">
-  <a href="demo.html" class="btn btn-primary">Zobacz demo</a> do Twojej branży</a>
-  </div>
-</section>
-  <h2>Cennik</h2>
-  <div class="price-grid">
-    <div class="price">
-      <h3>Free</h3>
-      <strong>0 zł</strong>
-      <p>1 ankieta<br>100 odpowiedzi<br>Podstawowy eksport</p>
-    </div>
-    <div class="price">
-      <h3>Pro</h3>
-      <strong>149 zł / mies.</strong>
-      <p>Nielimitowane ankiety<br>Quality Score<br>Segmentacja<br>Raport PDF</p>
-    </div>
-    <div class="price">
-      <h3>Agency</h3>
-      <strong>399 zł / mies.</strong>
-      <p>White-label<br>Multi-user<br>Zaawansowane eksporty</p>
-    </div>
-  </div>
-</section>
-<section class="section">
-  <h2>Demo w 3 krokach (15 minut)</h2>
-  <p class="lead">Bez gadania. Pokazujemy wartość na Twoim przykładzie.</p>
-
-  <div class="features">
-    <div class="card">
-      <h3>1) Wysyłasz 3 informacje</h3>
-      <p>Branża, cel ankiety i ile odpowiedzi planujesz zebrać.</p>
-      <p style="color:#c4b5fd;font-weight:600;margin:0;">➡ 30 sekund roboty</p>
-    </div>
-
-    <div class="card">
-      <h3>2) Dostajesz mini-ankietę pilotażową</h3>
-      <p>Gotowy szkic + rekomendacje pytań + 1 attention check.</p>
-      <p style="color:#c4b5fd;font-weight:600;margin:0;">➡ Start bez budowania od zera</p>
-    </div>
-
-    <div class="card">
-      <h3>3) Pokazujemy Quality Score + segmenty</h3>
-      <p>Widzisz czyste dane, sprzeczności, segmenty i wniosek biznesowy.</p>
-      <p style="color:#c4b5fd;font-weight:600;margin:0;">➡ Decyzja zamiast tabeli</p>
-    </div>
-  </div>
-
-  <div class="card" style="margin-top:20px;">
-    <h3 style="margin-top:0;">Gwarancja pilota</h3>
-    <p style="margin:0;color:#a1a1aa;">
-      Jeśli po demo nie zobaczysz realnej wartości — kończymy temat. Zero presji.
-    </p>
-  </div>
-
-  <div style="margin-top:25px;">
-    <a href="#kontakt" class="btn btn-primary">Umów demo</a>
-  </div>
-        </section>
-<section class="section" id="kontakt">
-  <h2>zamów audyt</h2>
-  <p class="lead">15 minut. Pokażemy, jak podnieść jakość Twoich badań.</p>
-  <a href="mailto:hello@insightforge.app?subject=Demo InsightForge" class="btn btn-primary">
-    hello@insightforge.app
-  </a>
-</section>
-
-<footer>
-  © <script>document.write(new Date().getFullYear())</script> InsightForge
-</footer>
-
-</div>
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
 </body>
   </html>
